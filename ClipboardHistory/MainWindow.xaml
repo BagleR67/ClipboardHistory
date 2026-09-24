@@ -26,13 +26,17 @@
                 <Button Grid.Column="2" Content="Найти" Margin="4,8" Width="100"/>
             </Grid>
 
-            <ListBox x:Name="mainListBox"  Grid.Row="1" ItemsSource="{Binding}" MouseDoubleClick="mainListBox_MouseDoubleClick">
+            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="mainListBox"  Grid.Row="1" ItemsSource="{Binding}" HorizontalContentAlignment="Stretch" MouseDoubleClick="mainListBox_MouseDoubleClick">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="4" Orientation="Vertical">
-                            <TextBlock Text="{Binding CopiedAt, StringFormat='{}{0:HH:mm}'}" Margin="5"/>
-                            <TextBlock Text="{Binding Text}" Margin="5"/>
-                        </StackPanel>
+                        <Grid Margin="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{Binding CopiedAt, StringFormat='{}{0:HH:mm}'}" Margin="5"/>
+                            <TextBlock Grid.Row="1" Text="{Binding Text}" Margin="5" TextWrapping="Wrap" MaxHeight="65"/>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 
