@@ -1,15 +1,17 @@
-﻿using System.Collections.ObjectModel;
+﻿using ClipboardHistory.Models;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ClipboardHistory.Models;
+
 
 namespace ClipboardHistory
 {
@@ -18,18 +20,32 @@ namespace ClipboardHistory
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ClipboardHistoryService service = new();
+        private ClipboardLogic logic = new();
+
+
+
+
         public MainWindow()
         {
             InitializeComponent();
 
-            ObservableCollection<ClipModel> clips = new ObservableCollection<ClipModel>();
-            clips.Add(new ClipModel { Text = "пока" });
-            clips.Add(new ClipModel { Text = "член" });
-            clips.Add(new ClipModel { Text = "кек" });
-            clips.Add(new ClipModel { Text = "привет" });
-            clips.Add(new ClipModel { Text = "привет" });
 
-            mainListBox.DataContext = clips;
+            this.DataContext = service.History;
+            logic.ClipboardUpdate += text => service.Add(new ClipModel { Text = text });
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            logic.Attach(this);
+        }
+        //
+
+        protected override void OnClosed(EventArgs e)
+        {
+            logic.Detach();
+            base.OnClosed(e);
         }
 
         private void mainListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -39,6 +55,11 @@ namespace ClipboardHistory
             {
                 Clipboard.SetText(ItemForCopy.Text);
             }
+        }
+
+        private void clearButton_Click(object sender, RoutedEventArgs e)
+        {
+            service.Clear();
         }
     }
 }
