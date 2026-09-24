@@ -1,7 +1,7 @@
 ﻿
 namespace ClipboardHistory.Models
 {
-    public class clipModel
+    public class ClipModel
     {
         public string Text { get; set;}
 

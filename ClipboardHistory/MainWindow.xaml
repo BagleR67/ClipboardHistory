@@ -26,7 +26,15 @@
                 <Button Grid.Column="2" Content="Найти" Margin="4,8" Width="100"/>
             </Grid>
 
-            <ListBox Grid.Row="1">
+            <ListBox x:Name="mainListBox"  Grid.Row="1" ItemsSource="{Binding}" DataContext="clips" MouseDoubleClick="mainListBox_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="4" Orientation="Vertical">
+                            <TextBlock Text="{Binding CopiedAt, StringFormat='{}{0:HH:mm}'}" Margin="5"/>
+                            <TextBlock Text="{Binding Text}" Margin="5"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
                 
             </ListBox>
 
