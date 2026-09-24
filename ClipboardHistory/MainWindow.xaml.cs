@@ -1,4 +1,5 @@
 ﻿using ClipboardHistory.Models;
+using H.NotifyIcon.Core;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
@@ -26,7 +27,7 @@ namespace ClipboardHistory
         private ClipboardLogic logic = new();
         private ICollectionView view;
         private string searchText = "";
-
+        private bool isExiting = false;
 
 
         public MainWindow()
@@ -46,6 +47,18 @@ namespace ClipboardHistory
                 else return clip.Text.Contains(searchText, StringComparison.OrdinalIgnoreCase);
 
             };
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (!isExiting)
+            {
+                e.Cancel = true;  
+                Hide();          
+            }
+            else base.OnClosing(e);
+
+            
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -91,6 +104,24 @@ namespace ClipboardHistory
         {
             searchText = search.Text;
             view.Refresh();
+        }
+
+        private void trayIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            Show();
+            WindowState = WindowState.Normal;
+            Activate();
+        }
+
+        private void showClick(object sender, RoutedEventArgs e)
+        {
+            trayIcon_TrayMouseDoubleClick(sender, e);
+        }
+
+        private void exitClick(object sender, RoutedEventArgs e)
+        {
+            isExiting = true;
+            Close();
         }
     }
 }

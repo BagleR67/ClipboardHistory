@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClipboardHistory"
+        xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
         mc:Ignorable="d"
-        Title="CH Windows" Height="450" Width="800">
+        Title="CH Windows" Height="450" Width="800"
+        Icon="/icon.ico">
     <Grid>
         <Grid Name="mainGrid">
             <Grid.RowDefinitions>
@@ -51,6 +53,14 @@
         <Border x:Name="copyNotif" BorderBrush="Black" BorderThickness="2" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10" Opacity="0" IsEnabled="False">
             <TextBlock Margin="5" x:Name="CopiedText" Text="Скопировано!" Foreground="Green" FontFamily="#Comic Sans MS" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
-        
+
+        <tb:TaskbarIcon x:Name="trayIcon" IconSource="D:\programming\Projects\ClipboardHistory\ClipboardHistory\ClipboardHistory\icon.ico"  ToolTipText="Clipboard History" TrayMouseDoubleClick="trayIcon_TrayMouseDoubleClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Показать" Click="showClick"/>
+                    <MenuItem Header="Выход" Click="exitClick"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
     </Grid>
 </Window>
